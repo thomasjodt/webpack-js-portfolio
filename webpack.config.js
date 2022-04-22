@@ -69,7 +69,6 @@ module.exports = {
             }
         ),
         new DotEnv(),
-        new CleanWebpackPlugin(),
     ],
     optimization: {
         minimize: true,
