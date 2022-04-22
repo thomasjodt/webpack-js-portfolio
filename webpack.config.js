@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const DotEnv = require('dotenv-webpack')
 
 module.exports = {
     entry: './src/index.js',
@@ -18,7 +19,7 @@ module.exports = {
             '@utils': path.resolve(__dirname, 'src/utils/'),
             '@templates': path.resolve(__dirname, 'src/templates/'),
             '@styles': path.resolve(__dirname, 'src/styles/'),
-            '@images': path.resolve(__dirname, 'assets/images/'),
+            '@images': path.resolve(__dirname, './src/assets/images'),
         }
     },
     module: {
@@ -66,6 +67,7 @@ module.exports = {
                 ]
             }
         ),
+        new DotEnv(),
     ],
     optimization: {
         minimize: true,
