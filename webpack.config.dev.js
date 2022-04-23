@@ -4,6 +4,30 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const DotEnv = require('dotenv-webpack')
 
+const ruleForJavascript = {
+    test: /\.m?js$/,
+    exclude: /node_modules/,
+    use: {
+        loader: 'babel-loader'
+    }
+}
+const rulesForCss = {
+    test: /\.css|.styl$/i,
+    use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader'],
+}
+const rulesForImages = {
+    test: /\.png/,
+    type: 'asset/resource'
+}
+const rulesForFonts = {
+    test: /\.(woff|woff2)$/i,
+    type: 'asset/resource',
+    generator: {
+        filename: 'assets/fonts/[name].[hash][ext][query]',
+    }
+}
+const rules = [ruleForJavascript, rulesForCss, rulesForFonts, rulesForImages]
+
 module.exports = {
     entry: './src/index.js',
     output: {
@@ -21,32 +45,7 @@ module.exports = {
             '@images': path.resolve(__dirname, './src/assets/images'),
         }
     },
-    module: {
-        rules: [
-            {
-                test: /\.m?js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader'
-                }
-            },
-            {
-                test: /\.css|.styl$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader'],
-            },
-            {
-                test: /\.png/,
-                type: 'asset/resource'
-            },
-            {
-                test: /\.(woff|woff2)$/i,
-                type: 'asset/resource',
-                generator: {
-                    filename: 'assets/fonts/[name].[hash][ext][query]',
-                }
-            },
-        ]
-    },
+    module: { rules },
     plugins: [
         new HtmlWebpackPlugin({
             inject: true,
@@ -68,4 +67,5 @@ module.exports = {
         ),
         new DotEnv(),
     ],
+    devServer: { port: 8080, open: true }
 }
